@@ -5,5 +5,12 @@ namespace Animes.Domain.Interfaces;
 // Interface para o repositório de animes
 public interface IAnimeRepository
 {
-    IEnumerable<Anime> GetAnimes();
+    Task<IEnumerable<Anime>> GetAnimesAsync();
+    Task<IEnumerable<Anime>> GetAnimesByFilterAsync(string? nome, string? diretor, List<string>? palavrasChave);
+    Task<Anime?> GetAnimeByIdAsync(int id);
+    Anime? GetAnimeById(int id);
+    Task<Anime?> GetAnimeByNameAsync(string name);
+    Task AddAnimeAsync(Anime anime);
+    void UpdateAnime(Anime anime);
+    void DeleteAnime(Anime anime);
 }

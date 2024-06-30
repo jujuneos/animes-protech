@@ -3,10 +3,10 @@
 // Entidade principal do projeto
 public class Anime
 {
-    public int Id { get; private set; }
-    public string? Nome { get; private set; }
-    public string? Resumo { get; private set; }
-    public string? Diretor { get; private set; }
+    public int Id { get; set; }
+    public string? Nome { get; set; }
+    public string? Resumo { get; set; }
+    public string? Diretor { get; set; }
 
     // Flag para exclusão lógica
     public bool? Deletado { get; set; }

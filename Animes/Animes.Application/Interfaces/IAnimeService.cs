@@ -1,9 +1,15 @@
-﻿using Animes.Application.ViewModels;
+﻿using Animes.Domain.Entities;
 
 namespace Animes.Application.Interfaces;
 
-// Interface do método para receber uma listagem dos animes
+// Interface com os métodos CRUD dos Animes
 public interface IAnimeService
 {
-    AnimeViewModel GetAnimes();
+    Task<IEnumerable<Anime>> GetAnimesAsync();
+    Task<IEnumerable<Anime>> GetAnimesByFilterAsync(string? nome, string? diretor, List<string>? palavrasChave);
+    Task<Anime?> GetAnimeByIdAsync(int id);
+    Task<Anime?> GetAnimeByNameAsync(string name);
+    Task AddAnimeAsync(Anime anime);
+    void UpdateAnime(int id, Anime anime);
+    void DeleteAnime(int id);
 }
