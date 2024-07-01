@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Animes.Infra.Data", "Animes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Animes.Infrastructure.IoC", "Animes.Infrastructure.IoC\Animes.Infrastructure.IoC.csproj", "{42401220-A0C9-4E1C-B0D4-0DBFE5761FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animes.Presentation", "Animes.Web.Mvc\Animes.Presentation.csproj", "{C28790D7-4033-46DE-B73E-96D50D62F4AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Animes.Presentation", "Animes.Web.Mvc\Animes.Presentation.csproj", "{C28790D7-4033-46DE-B73E-96D50D62F4AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animes.Tests", "Animes.Tests\Animes.Tests.csproj", "{95574C8F-92D3-41CC-A9AB-FF45B6E309FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C28790D7-4033-46DE-B73E-96D50D62F4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C28790D7-4033-46DE-B73E-96D50D62F4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C28790D7-4033-46DE-B73E-96D50D62F4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95574C8F-92D3-41CC-A9AB-FF45B6E309FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95574C8F-92D3-41CC-A9AB-FF45B6E309FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95574C8F-92D3-41CC-A9AB-FF45B6E309FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95574C8F-92D3-41CC-A9AB-FF45B6E309FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
