@@ -9,7 +9,6 @@ public interface IAnimeRepository
     Task<IEnumerable<Anime>> GetAnimesByFilterAsync(string? nome, string? diretor, List<string>? palavrasChave);
     Task<Anime?> GetAnimeByIdAsync(int id);
     Anime? GetAnimeById(int id);
-    Task<Anime?> GetAnimeByNameAsync(string name);
     Task AddAnimeAsync(Anime anime);
     void UpdateAnime(Anime anime);
     void DeleteAnime(Anime anime);

@@ -20,6 +20,9 @@ DependencyContainer.RegisterServices(builder.Services);
 
 builder.Services.AddControllers();
 
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -8,7 +8,6 @@ public interface IAnimeService
     Task<IEnumerable<Anime>> GetAnimesAsync();
     Task<IEnumerable<Anime>> GetAnimesByFilterAsync(string? nome, string? diretor, List<string>? palavrasChave);
     Task<Anime?> GetAnimeByIdAsync(int id);
-    Task<Anime?> GetAnimeByNameAsync(string name);
     Task AddAnimeAsync(Anime anime);
     void UpdateAnime(int id, Anime anime);
     void DeleteAnime(int id);

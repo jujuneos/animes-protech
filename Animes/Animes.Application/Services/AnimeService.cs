@@ -29,11 +29,6 @@ public class AnimeService : IAnimeService
         return await _animeRepository.GetAnimeByIdAsync(id);
     }
 
-    public async Task<Anime?> GetAnimeByNameAsync(string name)
-    {
-        return await _animeRepository.GetAnimeByNameAsync(name);
-    }
-
     public async Task AddAnimeAsync(Anime anime)
     {
         await _animeRepository.AddAnimeAsync(anime);

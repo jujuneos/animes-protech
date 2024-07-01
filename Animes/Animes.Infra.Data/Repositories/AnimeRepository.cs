@@ -2,22 +2,29 @@
 using Animes.Domain.Interfaces;
 using Animes.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Animes.Infra.Data.Repositories;
 
-// Repositório que implementa a interface IAnimeRepository, e instancia a classe de contexto
+// Repositório que implementa a interface IAnimeRepository, e instancia a classe de contexto e o registro de Logs
 public class AnimeRepository : IAnimeRepository
 {
-    public AnimesDbContext _context { get; set; }
+    private readonly AnimesDbContext _context;
+    private readonly ILogger<AnimeRepository> _logger;
 
-    public AnimeRepository(AnimesDbContext context)
+    public AnimeRepository(AnimesDbContext context, ILogger<AnimeRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Anime>> GetAnimesAsync()
     {
-        return await _context.Animes.Where(a => a.Deletado == false).ToListAsync();
+        var query = await _context.Animes.Where(a => a.Deletado == false).ToListAsync();
+
+        _logger.LogInformation("Consulta por todos os animes cadastrados: ${query}", query);
+
+        return query;
     }
 
     public async Task<IEnumerable<Anime>> GetAnimesByFilterAsync(string? nome, string? diretor, List<string>? palavrasChave)
@@ -34,6 +41,8 @@ public class AnimeRepository : IAnimeRepository
             foreach (string palavra in palavrasChave)
                 query = query.Where(a => a.Resumo!.Contains(palavra));
 
+        _logger.LogInformation("Consulta utilizando filtros: ${query}", query);
+
         return await query.ToListAsync();
     }
 
@@ -45,30 +54,38 @@ public class AnimeRepository : IAnimeRepository
     public Anime? GetAnimeById(int id)
     {
         var anime = _context.Animes.Find(id);
-        if (anime == null) { return null; }
-        return anime;
-    }
+        if (anime == null)
+        {
+            _logger.LogInformation("Anime com id {id} não encontrado.", id);
+            return null; 
+        }
 
-    public async Task<Anime?> GetAnimeByNameAsync(string name)
-    {
-        return await _context.Animes.FindAsync(name);
+        _logger.LogInformation("Anime encontrado: {anime}", anime.Nome);
+
+        return anime;
     }
 
     public async Task AddAnimeAsync(Anime anime)
     {
         await _context.Animes.AddAsync(anime);
         await _context.SaveChangesAsync();
+
+        _logger.LogInformation("Novo anime adicionado: {anime}", anime.Nome);
     }
 
     public void UpdateAnime(Anime anime)
     {
         _context.Animes.Update(anime);
         _context.SaveChanges();
+
+        _logger.LogInformation("Anime atualizado: {anime}", anime.Nome);
     }
 
     public void DeleteAnime(Anime anime)
     {
         _context.Animes.Update(anime);
         _context.SaveChanges();
+
+        _logger.LogInformation("Anime deletado: {anime}", anime);
     }
 }
