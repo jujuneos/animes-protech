@@ -9,4 +9,5 @@ public class AnimesDbContext : DbContext
     public AnimesDbContext(DbContextOptions options) : base(options) { }
 
     public DbSet<Anime> Animes { get; set; }
+    public DbSet<Login> Usuarios { get; set; }
 }

@@ -13,5 +13,8 @@ public class DependencyContainer
     {
         services.AddScoped<IAnimeService, AnimeService>();
         services.AddScoped<IAnimeRepository, AnimeRepository>();
+        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<ILoginRepository, LoginRepository>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
     }
 }

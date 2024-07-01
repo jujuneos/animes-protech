@@ -22,7 +22,7 @@ public class AnimeRepository : IAnimeRepository
     {
         var query = await _context.Animes.Where(a => a.Deletado == false).ToListAsync();
 
-        _logger.LogInformation("Consulta por todos os animes cadastrados: ${query}", query);
+        _logger.LogInformation("Consulta realizada por todos os animes cadastrados.");
 
         return query;
     }
@@ -41,7 +41,7 @@ public class AnimeRepository : IAnimeRepository
             foreach (string palavra in palavrasChave)
                 query = query.Where(a => a.Resumo!.Contains(palavra));
 
-        _logger.LogInformation("Consulta utilizando filtros: ${query}", query);
+        _logger.LogInformation("Consulta realizada por todos os animes utilizando filtros.");
 
         return await query.ToListAsync();
     }
@@ -86,6 +86,6 @@ public class AnimeRepository : IAnimeRepository
         _context.Animes.Update(anime);
         _context.SaveChanges();
 
-        _logger.LogInformation("Anime deletado: {anime}", anime);
+        _logger.LogInformation("Anime deletado: {anime}", anime.Nome);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Animes.Application.Interfaces;
 using Animes.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Animes.Web.Mvc.Controllers;
@@ -18,7 +19,7 @@ public class AnimesController : Controller
     // Listagem de todos os registros não deletados com paginação
     // A variável pagina recebe o número da página que o usuário deseja consultar
     // A variável quandtidadeRegistros recebe a quantidade que o usuário quer ver da determinada página
-    [HttpGet]
+    [HttpGet, Authorize]
     public async Task<ActionResult<IEnumerable<Anime>>> ListarTodos(int pagina, int quantidadeRegistros)
     {
         var animes = await _animeService.GetAnimesAsync();
@@ -34,7 +35,7 @@ public class AnimesController : Controller
 
     // Listagem com filtro e paginação
     // A lista palavrasChave recebe várias palavras de uma vez e retorna todos os registros cujo Resumo contenha alguma delas.
-    [HttpGet("filtro")]
+    [HttpGet, Route("filtro"), Authorize]
     public async Task<ActionResult<IEnumerable<Anime>>> ListarPorFiltro(int pagina, int quantidadeRegistros, [FromQuery] string? nome, [FromQuery] string? diretor, [FromQuery] List<string>? palavrasChave)
     {
         try
@@ -57,7 +58,7 @@ public class AnimesController : Controller
     }
 
     // Método para cadastrar um novo anime
-    [HttpPost]
+    [HttpPost, Authorize]
     public async Task<ActionResult> CadastrarAnime(Anime anime)
     {
         await _animeService.AddAnimeAsync(anime);
@@ -65,7 +66,7 @@ public class AnimesController : Controller
     }
 
     // Método para atualizar os dados de um anime.
-    [HttpPut("id:{id}")]
+    [HttpPut, Route("id:{id}"), Authorize]
     public ActionResult AtualizarAnime(int id, Anime anime)
     {
         _animeService.UpdateAnime(id, anime);
@@ -73,7 +74,7 @@ public class AnimesController : Controller
     }
 
     // Método para deletar logicamente um anime. A exclusão ocorre marcando a Flag deletado como true.
-    [HttpDelete("id:{id}")]
+    [HttpDelete, Route("id:{id}"), Authorize]
     public ActionResult DeletarAnime(int id)
     {
         _animeService.DeleteAnime(id);
