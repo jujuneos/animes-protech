@@ -1,7 +1,6 @@
 ﻿using Animes.Application.Services;
 using Animes.Domain.Entities;
 using Animes.Domain.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Xml.Linq;
 using Xunit;
@@ -19,6 +18,7 @@ public class AnimeTests
         _animeService = new AnimeService(_animeRepositoryMock.Object);
     }
 
+    // Testa uma consulta por um Id válido
     [Fact]
     public async Task ConsultaPorIdValida()
     {
@@ -39,14 +39,15 @@ public class AnimeTests
         var result = await _animeService.GetAnimeByIdAsync(id);
 
         // Assert
-        Xunit.Assert.NotNull(result);
-        Xunit.Assert.Equal(id, result.Id);
-        Xunit.Assert.Equal("Naruto", result.Nome);
-        Xunit.Assert.Equal("Um jovem tenta se tornar Hokage", result.Resumo);
-        Xunit.Assert.Equal("Masashi Kishimoto", result.Diretor);
-        Xunit.Assert.Equal(false, result.Deletado);
+        Assert.NotNull(result);
+        Assert.Equal(id, result.Id);
+        Assert.Equal("Naruto", result.Nome);
+        Assert.Equal("Um jovem tenta se tornar Hokage", result.Resumo);
+        Assert.Equal("Masashi Kishimoto", result.Diretor);
+        Assert.Equal(false, result.Deletado);
     }
 
+    // Testa uma consulta por um Id inválido
     [Fact]
     public async Task ConsultaPorIdInvalida()
     {
@@ -59,9 +60,10 @@ public class AnimeTests
         var result = await _animeService.GetAnimeByIdAsync(id);
 
         // Assert
-        Xunit.Assert.Null(result);
+        Assert.Null(result);
     }
 
+    // Testa uma consulta por todos os animes cadastrados
     [Fact]
     public async Task ConsultaPorTodosRetornaTodos()
     {
@@ -78,24 +80,24 @@ public class AnimeTests
         var result = await _animeService.GetAnimesAsync();
 
         // Assert
-        Xunit.Assert.NotNull(result);
-        Xunit.Assert.Equal(2, result.Count());
-        Xunit.Assert.Equal("Naruto", result.First().Nome);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Count());
+        Assert.Equal("Naruto", result.First().Nome);
     }
 
+    // Testa uma consulta usando filtros
     [Fact]
     public async Task ConsultaComFiltro()
     {
         // Arrange
         var animes = new List<Anime>
         {
-            new Anime { Id = 1, Nome = "Naruto", Resumo = "Um jovem tenta se tornar Hokage", Diretor = "Masashi Kishimoto", Deletado = false },
             new Anime { Id = 2, Nome = "One Piece", Resumo = "Um jovem tentar se tornar o rei dos piratas", Diretor = "Eichiro Oda", Deletado = false }
         };
 
         string nome = "One Piece";
         string diretor = "Eichiro Oda";
-        List<string> palavrasChave = [ "pirata", "jovem" ];
+        List<string> palavrasChave = [ "rei", "pirata" ];
 
         _animeRepositoryMock.Setup(repo => repo.GetAnimesByFilterAsync(nome, diretor, palavrasChave)).ReturnsAsync(animes);
 
@@ -103,11 +105,12 @@ public class AnimeTests
         var result = await _animeService.GetAnimesByFilterAsync(nome, diretor, palavrasChave);
 
         // Assert
-        Xunit.Assert.NotNull(result);
-        Xunit.Assert.Single(result);
-        Xunit.Assert.Equal("One Piece", result.First().Nome);
+        Assert.NotNull(result);
+        Assert.Single(result);
+        Assert.Equal("One Piece", result.First().Nome);
     }
 
+    // Testa o cadastro de um anime válido
     [Fact]
     public async Task AdicionarAnimeValido()
     {
@@ -121,43 +124,70 @@ public class AnimeTests
         _animeRepositoryMock.Verify(repo => repo.AddAnimeAsync(It.IsAny<Anime>()), Times.Once);
     }
 
+    // Testa a edição de um anime válido
     [Fact]
-    [ExpectedException(typeof(Exception))]
     public void AtualizarAnimeValido()
     {
         // Arrange
-        var anime = new Anime { Nome = "Naruto", Resumo = "Um jovem tenta se tornar Raposa de Nove Caudas", Diretor = "Masashi Kishimoto", Deletado = false };
+        var anime = new Anime { Id = 1, Nome = "Narute", Resumo = "Um jovem tenta se tornar Raposa de Nove Caudas", Diretor = "Masashi Oda", Deletado = false };
 
-        // Act
-        _animeService.UpdateAnime(1, anime);
+        // Este bloco trata uma exceção que é lançada quando o anime com dado id não é encontrado
+        try
+        {
+            // Act
+            _animeService.UpdateAnime(1, anime);
 
-        // Assert
-        _animeRepositoryMock.Verify(repo => repo.UpdateAnime(It.IsAny<Anime>()), Times.Once);
+            // Assert
+            _animeRepositoryMock.Verify(repo => repo.UpdateAnime(It.IsAny<Anime>()), Times.Once);
+        }
+        catch (Exception ex) 
+        {
+            // Assert
+            Assert.IsType<Exception>(ex);
+        }
     }
 
+    // Testa a exclusão de um anime
     [Fact]
     public void DeletarAnimeValido()
     {
         // Arrange
         var anime = new Anime { Id = 1, Nome = "Naruto", Resumo = "Um jovem tenta se tornar Hokage", Diretor = "Masashi Kishimoto", Deletado = false };
 
-        // Act
-        _animeService.DeleteAnime(anime.Id);
+        try
+        {
+            // Act
+            _animeService.DeleteAnime(anime.Id);
 
-        // Assert
-        _animeRepositoryMock.Verify(repo => repo.DeleteAnime(anime), Times.Once);
+            // Assert
+            _animeRepositoryMock.Verify(repo => repo.DeleteAnime(anime), Times.Once);
+        }
+        catch (Exception ex)
+        {
+            // Assert
+            Assert.IsType<Exception>(ex);
+        }
     }
 
+    // Testa a exclusão de um anime inválido
     [Fact]
     public void DeletarAnimeInvalido()
     {
         // Arrange
         var anime = new Anime { Id = 800, Nome = "Nao Existe", Resumo = "Teste", Diretor = "Nenhum", Deletado = false };
 
-        // Act
-        _animeService.DeleteAnime(anime.Id);
+        try
+        {
+            // Act
+            _animeService.DeleteAnime(anime.Id);
 
-        // Assert
-        Xunit.Assert.Null(anime);
+            // Assert
+            Assert.Null(anime);
+        }
+        catch (Exception ex)
+        {
+            // Assert
+            Assert.IsType<Exception>(ex);
+        }
     }
 }

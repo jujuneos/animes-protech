@@ -69,4 +69,18 @@ public class LoginTests
         // Assert
         Assert.Throws<UnauthorizedAccessException>(()  => _loginService.Authenticate(request));
     }
+    
+    // Testa cadastro de um usuário válido
+    [Fact]
+    public void AdicionarUsuarioValido()
+    {
+        // Arrange
+        var usuario = new Login { Username = "junior", Senha = "senha123" };
+
+        // Act
+        _loginService.AddUser(usuario);
+
+        // Assert
+        _loginRepositoryMock.Verify(repo => repo.CreateUser(It.IsAny<Login>()), Times.Once);
+    }
 }

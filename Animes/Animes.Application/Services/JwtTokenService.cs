@@ -18,6 +18,7 @@ public class JwtTokenService : IJwtTokenService
     }
 
     // Gerar token para dar acesso aos endpoints
+    // O Token precisa ser informado no Swagger no formato: "Bearer 'token'"
     public string GetToken(Login user)
     {
         var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
