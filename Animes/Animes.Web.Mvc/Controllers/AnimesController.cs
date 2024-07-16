@@ -16,9 +16,12 @@ public class AnimesController : Controller
         _animeService = animeService;
     }
 
-    // Listagem de todos os registros não deletados com paginação
-    // A variável pagina recebe o número da página que o usuário deseja consultar
-    // A variável quandtidadeRegistros recebe a quantidade que o usuário quer ver da determinada página
+    /// <summary>
+    /// Lista todos os registros não deletados com paginação por meio de <paramref name="pagina"/> e <paramref name="quantidadeRegistros"/>.
+    /// </summary>
+    /// <param name="pagina">Recebe o número da página que o usuário deseja consultar.</param>
+    /// <param name="quantidadeRegistros">Recebe a quantidade de registros que o usuário quer ver da determinada página.</param>
+    /// <returns>Uma lista de registros paginados.</returns>
     [HttpGet, Authorize]
     public async Task<ActionResult<IEnumerable<Anime>>> ListarTodos(int pagina, int quantidadeRegistros)
     {
@@ -33,8 +36,16 @@ public class AnimesController : Controller
         return Ok(animes);
     }
 
-    // Listagem com filtro e paginação
-    // A lista palavrasChave recebe várias palavras de uma vez e retorna todos os registros cujo Resumo contenha alguma delas.
+    /// <summary>
+    /// Lista os animes cadastrados paginados por meio de <paramref name="pagina"/> e <paramref name="quantidadeRegistros"/> e filtrados por <paramref name="nome"/>, <paramref name="diretor"/> e <paramref name="palavrasChave"/>.
+    /// </summary>
+    /// <param name="pagina">Recebe o número da página que o usuário deseja consultar.</param>
+    /// <param name="quantidadeRegistros">Recebe a quantidade de registros que o usuário quer ver da determinada página.</param>
+    /// <param name="nome">O nome do anime que o usuário deseja consultar.</param>
+    /// <param name="diretor">O diretor do anime que o usuário deseja consultar.</param>
+    /// <param name="palavrasChave">Palavras chave que deverão constar no resumo do anime desejado.</param>
+    /// <returns>Uma lista de registros filtrados e paginados.</returns>
+    /// <exception cref="Exception">Lançada se algum dos parâmetros for inválido.</exception>
     [HttpGet, Route("filtro"), Authorize]
     public async Task<ActionResult<IEnumerable<Anime>>> ListarPorFiltro(int pagina, int quantidadeRegistros, [FromQuery] string? nome, [FromQuery] string? diretor, [FromQuery] List<string>? palavrasChave)
     {
@@ -51,9 +62,9 @@ public class AnimesController : Controller
 
             return Ok(animes);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500, $"Erro interno: {ex.Message}");
+            return StatusCode(500, "Erro interno.");
         }
     }
 

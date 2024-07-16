@@ -7,20 +7,29 @@ using Xunit;
 
 namespace Animes.Tests;
 
+/// <summary>
+/// Classe <c>AnimeTests</c> para testar os métodos CRUD de Animes.
+/// </summary>
 public class AnimeTests
 {
     private readonly Mock<IAnimeRepository> _animeRepositoryMock;
     private readonly AnimeService _animeService;
 
+    /// <summary>
+    /// Construtor <c>AnimeTests</c> para instanciar os objetos.
+    /// </summary>
     public AnimeTests()
     {
         _animeRepositoryMock = new Mock<IAnimeRepository>();
         _animeService = new AnimeService(_animeRepositoryMock.Object);
     }
 
-    // Testa uma consulta por um Id válido
+    /// <summary>
+    /// Método para testar a consulta por Id de um anime.
+    /// </summary>
+    /// <returns>Um anime válido com o Id informado.</returns>
     [Fact]
-    public async Task ConsultaPorIdValida()
+    public async Task ConsultaPorId_RetornaAnimeValido()
     {
         // Arrange
         var id = 1;
@@ -47,9 +56,12 @@ public class AnimeTests
         Assert.Equal(false, result.Deletado);
     }
 
-    // Testa uma consulta por um Id inválido
+    /// <summary>
+    /// Método para consultar por Id inválido
+    /// </summary>
+    /// <returns>O retorno é nulo</returns>
     [Fact]
-    public async Task ConsultaPorIdInvalida()
+    public async Task ConsultaPorIdInvalido_RetornaNull()
     {
         // Arrange
         var id = 900;

@@ -6,9 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Animes.Infrastructure.IoC;
 
-// Uso de injeção de dependência para fazer as conexões entre as interfaces e as implementações
+/// <summary>
+/// Classe <c>DependencyContainer</c> usa injeção de dependência para fazer as conexões entre as interfaces e as implementações.
+/// </summary>
 public class DependencyContainer
 {
+    /// <summary>
+    /// Método <c>RegisterServices</c> registra os services para uso na Classe Program.
+    /// </summary>
+    /// <param name="services"></param>
     public static void RegisterServices(IServiceCollection services)
     {
         services.AddScoped<IAnimeService, AnimeService>();
